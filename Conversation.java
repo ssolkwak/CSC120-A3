@@ -2,17 +2,23 @@ import java.util.Scanner;
 import java.util.Random;
 import java.util.ArrayList;
 
-class Conversation {
+public class Conversation {
 
   public static void main(String[] arguments) {
     
-    // Ask how many rounds
+    /**
+     * Prints to ask how many rounds of conversation the user wants to have
+     */
     System.out.print("How many rounds? ");
     
-    // Scanner object
+    /**
+     * Creates a scanner called input
+     */
     Scanner input = new Scanner(System.in);
 
-    // Canned random responses in string array
+    /**
+     * Creates static string array with "canned" random responses
+     */
     String[] arr = {"Uh-huh...",
                     "How interesting!",
                     "Really?",
@@ -20,88 +26,134 @@ class Conversation {
                     "I see!", 
                     "That's great!"};
 
-    // Random object
+    /**
+     * Creates random object
+     */
     Random rand = new Random();
 
-    // Arraylist that stores lines for transcript
+    /** 
+     * Creates Arraylist that stores lines for transcript
+     */
     ArrayList<String> transcript = new ArrayList<>();
 
-    // User input total rounds
+    /** 
+     * Reads user input of total rounds wanted
+     */
     int rounds = input.nextInt();
 
-    // Conversation starter and ender
+    /**
+     * Stores conversation starter and ender to string variables
+     */
     String starter = "Hi there! what's on your mind?";
     String ender = "Thanks for chatting!";
     
-    // For current round is within the total number of rounds
+    /**
+     * Loop that runs as long as current round is within the total number of rounds
+     */
     for (int i = 1; i <= rounds; i++){
       
-      // Print starter before the first round
+      /** 
+       * Prints starter string before the first round 
+       * Adds the starter string to the transcript
+       */
       if (i == 1){
         System.out.println(starter);
         transcript.add(starter);
         input.nextLine();
       }
 
-      // Reads user input line and store in transcript
+      /** 
+       * Reads user input line and store it in transcript
+       */
       String inputLine = input.nextLine();
       transcript.add(inputLine);
       
+      /**
+       * String variable for bot response
+       */
       String response;
 
-      // Check if chatbot should give a response with modified input line or a random response
+      /**
+       * Check if chatbot should give a response of modified input line or a random response from the ArrayList
+       * @return T/F: does the inputLine contains any mirror words to be replaced?
+       */
       if (inputLine.contains("I") || inputLine.contains("me") || inputLine.contains("am") || inputLine.contains("you") || inputLine.contains("my") || inputLine.contains("your")){
         response = inputLine;
 
-        // Detect and replace words. *** Make sure once replaced word doesn't get replaced again
+        /** 
+         * Detects and replace each mirror words. 
+         */ 
+        if (response.contains("I'm")){
+          response = response.replace("'m", "_'m_");
+        }
+        if (response.contains("you're")){
+          response = response.replace("'re", "'m");
+        }
+        if (response.contains("_'m_")){
+          response = response.replace("_'m_", "'re");
+        }
         if (response.contains("I")){
-          response = response.replaceAll("I", "_I_");
+          response = response.replace("I", "_I_");
         }
         if (response.contains("am")){
-          response = response.replaceAll("am", "are");
+          response = response.replace("am", "are");
         }
         if (response.contains("you are")){
-          response = response.replaceAll("you are", "I am");
+          response = response.replace("you are", "I am");
         }
         if (response.contains("you")){
-          response = response.replaceAll("you", "I");
+          response = response.replace("you", "I");
         }
         if (response.contains("_I_")){
-          response = response.replaceAll("_I_", "you");
+          response = response.replace("_I_", "you");
         }
         if (response.contains("me")){
-          response = response.replaceAll("me", "you");
+          response = response.replace("me", "you");
         }
         if (response.contains("my")){
-          response = response.replaceAll("my", "_my_");
+          response = response.replace("my", "_my_");
         }
         if (response.contains("your")){
-          response = response.replaceAll("your", "my");
+          response = response.replace("your", "my");
         } 
         if (response.contains("_my_")){
-          response = response.replaceAll("_my_", "my");
+          response = response.replace("_my_", "my");
         }
+        /** 
+         * Checks if the string ends with . 
+         * if so, replaces . with ? 
+         */ 
         if (response.charAt(response.length()-1) == '.'){
           response = response.replace('.','?');
         }
       } else {
+        /**
+         * If not containing mirror words, set response to random 
+         */ 
         response = arr[rand.nextInt(arr.length)];
       }
       
-      // Print response and add to transcript
+      /** Prints response and add it to the transcript
+       */
       System.out.println(response);
       transcript.add(response);
     }
-    // Print ender and add to transcript
+    /** 
+     * Prints ender string and add it to the transcript
+     */
     System.out.println(ender + "\n");
     transcript.add(ender);
 
-    // Print transcript
+    /** 
+     * Prints the entire transcript
+     */
     System.out.println("TRANSCRIPT:");
     for(String line : transcript){
       System.out.println("\t" + line);
     }
-    // Close scanner
+    /**
+     * Closes scanner
+     */
     input.close();
   }
 }

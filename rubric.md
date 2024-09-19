@@ -30,7 +30,7 @@ __YES__ 1 pt: Replaces simple mirror words appropriately (unpunctuated, lowercas
 
 ### Level 3 (3 pts)
 
-_____ 1 pt: Makes all appropriate mirror replacements
+__YES__ 1 pt: Makes all appropriate mirror replacements
 
 __YES__ 1 pt: Stores transcript of the conversation in an array
 
@@ -52,9 +52,9 @@ __YES__ 4 pts: Programs compile without errors or warnings
 
 __YES__ 2 pts: Executes fully & consistently without crashing (exception/freeze)
 
-____ 2 pt: Complies with style guidelines (missing items 1 pt each):
+__YES__ 2 pt: Complies with style guidelines (missing items 1 pt each):
 
-      ____ Classes & class members all have Javadoc header comments
+      __YES__ Classes & class members all have Javadoc header comments
 
       __YES__ Clear and consistent indentation of bracketed sections
 
