@@ -52,30 +52,42 @@ class Conversation {
       // Check if chatbot should give a response with modified input line or a random response
       if (inputLine.contains("I") || inputLine.contains("me") || inputLine.contains("am") || inputLine.contains("you") || inputLine.contains("my") || inputLine.contains("your")){
         response = inputLine;
+
+        // Detect and replace words. *** Make sure once replaced word doesn't get replaced again
+        if (response.contains("I")){
+          response = response.replaceAll("I", "_I_");
+        }
+        if (response.contains("am")){
+          response = response.replaceAll("am", "are");
+        }
+        if (response.contains("you are")){
+          response = response.replaceAll("you are", "I am");
+        }
+        if (response.contains("you")){
+          response = response.replaceAll("you", "I");
+        }
+        if (response.contains("_I_")){
+          response = response.replaceAll("_I_", "you");
+        }
+        if (response.contains("me")){
+          response = response.replaceAll("me", "you");
+        }
+        if (response.contains("my")){
+          response = response.replaceAll("my", "_my_");
+        }
+        if (response.contains("your")){
+          response = response.replaceAll("your", "my");
+        } 
+        if (response.contains("_my_")){
+          response = response.replaceAll("_my_", "my");
+        }
+        if (response.charAt(response.length()-1) == '.'){
+          response = response.replace('.','?');
+        }
       } else {
         response = arr[rand.nextInt(arr.length)];
       }
       
-      // Detect and replace words. *** Make sure once replaced word doesn't get replaced again
-      if (response.contains("I")){
-        response = response.replace("I", "you");
-      }
-      if (response.contains("you")){
-        response = response.replace("you", "I");
-      }
-      if (response.contains("me")){
-        response = response.replace("me", "you");
-      }
-      if (response.contains("am")){
-        response = response.replace("am", "are");
-      }
-      if (response.contains("my")){
-        response = response.replace("my", "your");
-      }
-      if (response.contains("your")){
-        response = response.replace("your", "my");
-      }
-
       // Print response and add to transcript
       System.out.println(response);
       transcript.add(response);
