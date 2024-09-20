@@ -1,25 +1,26 @@
 import java.util.Scanner;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Conversation {
 
   public static void main(String[] arguments) {
-    
     /**
-     * Prints to ask how many rounds of conversation the user wants to have
-     */
-    System.out.print("How many rounds? ");
-    
-    /**
-     * Creates a scanner called input
+     * Creates a scanner named input
      */
     Scanner input = new Scanner(System.in);
 
     /**
+     * Creates a random object
+     */
+    Random rand = new Random();
+
+    /**
      * Creates static string array with "canned" random responses
      */
-    String[] arr = {"Uh-huh...",
+    String[] randRes = {"Uh-huh...",
                     "How interesting!",
                     "Really?",
                     "Hmm...", 
@@ -27,14 +28,41 @@ public class Conversation {
                     "That's great!"};
 
     /**
-     * Creates random object
+     * Creates a Map of String sets to store mirror word pairs
      */
-    Random rand = new Random();
+    Map<String,String> mirrorWords = new HashMap<String,String>();
+    /**
+     * Add mirror word pairs to the Map
+     * @Param key: word to be replaced, value: word to replace
+     */
+    mirrorWords.put("I","you");
+    mirrorWords.put("You","I");
+    mirrorWords.put("you","I");
+    mirrorWords.put("am","are");
+    mirrorWords.put("I'm","you're");
+    mirrorWords.put("You're","I'm");
+    mirrorWords.put("you're","I'm");
+    mirrorWords.put("me","you");
+    mirrorWords.put("your","my");
+    mirrorWords.put("my","your");
+    mirrorWords.put("mine","yours");
+    mirrorWords.put("yours","mine");
+
+    /**
+     * Stores conversation starter and ender to string variables
+     */
+    String starter = "Hi there! what's on your mind?";
+    String ender = "Thanks for chatting!";
 
     /** 
      * Creates Arraylist that stores lines for transcript
      */
     ArrayList<String> transcript = new ArrayList<>();
+
+    /**
+     * Prints the inquiry to ask how many rounds of conversation the user wants to have
+     */
+    System.out.print("How many rounds? ");
 
     /** 
      * Reads user input of total rounds wanted
@@ -42,19 +70,13 @@ public class Conversation {
     int rounds = input.nextInt();
 
     /**
-     * Stores conversation starter and ender to string variables
-     */
-    String starter = "Hi there! what's on your mind?";
-    String ender = "Thanks for chatting!";
-    
-    /**
-     * Loop that runs as long as current round is within the total number of rounds
+     * Loop that iterates as long as current round is within the total number of rounds
      */
     for (int i = 1; i <= rounds; i++){
-      
       /** 
        * Prints starter string before the first round 
        * Adds the starter string to the transcript
+       * Gets ready to read the next input line
        */
       if (i == 1){
         System.out.println(starter);
@@ -63,83 +85,92 @@ public class Conversation {
       }
 
       /** 
-       * Reads user input line and store it in transcript
+       * Reads user input line and adds it to the transcript
        */
       String inputLine = input.nextLine();
       transcript.add(inputLine);
       
       /**
-       * String variable for bot response
+       * Creates StringBuffer for constructing appropriate bot response
        */
-      String response;
+      StringBuffer formResponse = new StringBuffer();
 
       /**
-       * Check if chatbot should give a response of modified input line or a random response from the ArrayList
-       * @return T/F: does the inputLine contains any mirror words to be replaced?
+       * Splits user inputLine by words and store in a string array
        */
-      if (inputLine.contains("I") || inputLine.contains("me") || inputLine.contains("am") || inputLine.contains("you") || inputLine.contains("my") || inputLine.contains("your")){
-        response = inputLine;
+      String[] inputWords = inputLine.split(" ");
 
-        /** 
-         * Detects and replace each mirror words. 
-         */ 
-        if (response.contains("I'm")){
-          response = response.replace("'m", "_'m_");
-        }
-        if (response.contains("you're")){
-          response = response.replace("'re", "'m");
-        }
-        if (response.contains("_'m_")){
-          response = response.replace("_'m_", "'re");
-        }
-        if (response.contains("I")){
-          response = response.replace("I", "_I_");
-        }
-        if (response.contains("am")){
-          response = response.replace("am", "are");
-        }
-        if (response.contains("you are")){
-          response = response.replace("you are", "I am");
-        }
-        if (response.contains("you")){
-          response = response.replace("you", "I");
-        }
-        if (response.contains("_I_")){
-          response = response.replace("_I_", "you");
-        }
-        if (response.contains("me")){
-          response = response.replace("me", "you");
-        }
-        if (response.contains("my")){
-          response = response.replace("my", "_my_");
-        }
-        if (response.contains("your")){
-          response = response.replace("your", "my");
-        } 
-        if (response.contains("_my_")){
-          response = response.replace("_my_", "my");
-        }
-        /** 
-         * Checks if the string ends with . 
-         * if so, replaces . with ? 
-         */ 
-        if (response.charAt(response.length()-1) == '.'){
-          response = response.replace('.','?');
-        }
-      } else {
+      /**
+       * Loops through each word of the inputWords
+       */
+      for (String word : inputWords){
         /**
-         * If not containing mirror words, set response to random 
-         */ 
-        response = arr[rand.nextInt(arr.length)];
+         * Sets initial length of formResponse before going through mirror words loop
+         */
+        int initLength = formResponse.length();
+        /**
+         * Loops through mirrorWords by each key of the keySet
+         */
+        for (String key : mirrorWords.keySet()){
+          /**
+           * Checks if current word is a mirror word that needs to be replaced
+           * @Return T/F: if current word is equal to the current mirrorWords key
+           */
+          if (word.equals(key)){
+            /**
+             * Adds corresponding replacement mirror word to formResponse followed by a space
+             */
+            formResponse.append(mirrorWords.get(key) + " ");
+          }
+        }
+        /**
+         * Checks if anything was added to formResponse
+         * @Return T/F: if current length of formResponse is equal to the length before mirror word loop
+         */
+        if (formResponse.length() == initLength){
+          /**
+           * Adds current word(not modified) to formResponse followed by a space
+           */
+          formResponse.append(word + " ");
+        }
       }
+      /**
+       * Removes excess space at the end of formResponse
+       */
+      formResponse = formResponse.delete(formResponse.length()-1, formResponse.length());
+
+      /**
+       * Converts StringBuffer to String to be stored in String variable response
+       */
+      String response = formResponse.toString();
       
+      /**
+       * Checks if there was any mirror words detected and replaced
+       * @Return T/F: if contructed response is equal to the initial inputLine user entered
+       */
+      if (response.equals(inputLine)){
+        /**
+         * Sets response to one randomly selected from the canned responses
+         */
+        response = randRes[rand.nextInt(randRes.length)];
+      } 
+      /**
+       * If there was any mirror words replaced, and if the response ends with a period
+       */
+      else if (response.endsWith(".")){
+        /**
+         * Replaces the period at the end with a question mark
+         */
+        response = response.substring(0, response.length()-1) + "?";
+      }
+
       /** Prints response and add it to the transcript
        */
       System.out.println(response);
       transcript.add(response);
     }
     /** 
-     * Prints ender string and add it to the transcript
+     * Prints ender string and an empty line then adds them to the transcript
      */
     System.out.println(ender + "\n");
     transcript.add(ender);
