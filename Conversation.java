@@ -6,11 +6,14 @@ import java.util.HashMap;
 
 /**
  * Represents a conversation with a bot 
- * For the input number of rounds, the bot returns a mirrored or a random response
- * Prints the full transcript of the conversation
  */
 public class Conversation {
 
+/**
+ * For the input number of rounds, the bot returns a mirrored or a random response
+ * Prints the full transcript of the conversation
+ * @param arguments
+ */
   public static void main(String[] arguments) {
 
     // Creates a scanner object
