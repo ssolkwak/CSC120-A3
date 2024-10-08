@@ -7,8 +7,9 @@ import java.util.HashMap;
 public class Conversation {
 
   public static void main(String[] arguments) {
+
     /**
-     * Creates a scanner named input
+     * Creates a scanner object
      */
     Scanner input = new Scanner(System.in);
 
@@ -31,9 +32,10 @@ public class Conversation {
      * Creates a Map of String sets to store mirror word pairs
      */
     Map<String,String> mirrorWords = new HashMap<String,String>();
+
     /**
-     * Add mirror word pairs to the Map
-     * @Param key: word to be replaced, value: word to replace
+     * Add mirror word pairs to the Map mirrorWords
+     * @param key: word to be replaced, value: word to replace
      */
     mirrorWords.put("I","you");
     mirrorWords.put("You","I");
@@ -49,13 +51,13 @@ public class Conversation {
     mirrorWords.put("yours","mine");
 
     /**
-     * Stores conversation starter and ender to string variables
+     * Stores conversation starter and ender as string objects
      */
     String starter = "Hi there! what's on your mind?";
     String ender = "Thanks for chatting!";
 
     /** 
-     * Creates Arraylist that stores lines for transcript
+     * Creates an Arraylist of Strings that stores lines for the transcript of the conversation
      */
     ArrayList<String> transcript = new ArrayList<>();
 
@@ -65,12 +67,12 @@ public class Conversation {
     System.out.print("How many rounds? ");
 
     /** 
-     * Reads user input of total rounds wanted
+     * Reads user input of total rounds wanted and saves it in int variable
      */
     int rounds = input.nextInt();
 
     /**
-     * Loop that iterates as long as current round is within the total number of rounds
+     * Loop iterates as long as current round is within the total number of rounds
      */
     for (int i = 1; i <= rounds; i++){
       /** 
@@ -85,7 +87,7 @@ public class Conversation {
       }
 
       /** 
-       * Reads user input line and adds it to the transcript
+       * Reads and stores user input line and adds it to the transcript
        */
       String inputLine = input.nextLine();
       transcript.add(inputLine);
@@ -96,7 +98,7 @@ public class Conversation {
       StringBuffer formResponse = new StringBuffer();
 
       /**
-       * Splits user inputLine by words and store in a string array
+       * Splits user inputLine by words and store in a string array inputWords
        */
       String[] inputWords = inputLine.split(" ");
 
@@ -114,7 +116,7 @@ public class Conversation {
         for (String key : mirrorWords.keySet()){
           /**
            * Checks if current word is a mirror word that needs to be replaced
-           * @Return T/F: if current word is equal to the current mirrorWords key
+           * T/F: if current word is equal to the current mirrorWords key
            */
           if (word.equals(key)){
             /**
@@ -125,7 +127,7 @@ public class Conversation {
         }
         /**
          * Checks if anything was added to formResponse
-         * @Return T/F: if current length of formResponse is equal to the length before mirror word loop
+         * T/F: if current length of formResponse is equal to the length before mirror word loop
          */
         if (formResponse.length() == initLength){
           /**
@@ -134,6 +136,7 @@ public class Conversation {
           formResponse.append(word + " ");
         }
       }
+
       /**
        * Removes excess space at the end of formResponse
        */
@@ -146,7 +149,7 @@ public class Conversation {
       
       /**
        * Checks if there was any mirror words detected and replaced
-       * @Return T/F: if contructed response is equal to the initial inputLine user entered
+       * T/F: if contructed response is equal to the initial inputLine user entered
        */
       if (response.equals(inputLine)){
         /**
